@@ -9,10 +9,12 @@ class MathApp:
         master.title("Math Helper!")
         self.formula_list = {('Quadratic Formula',self.quad),('Test Formula',self.test)}
         
+        
         # main containers
         self.button_frame = Frame(height=2, bd=1, relief="sunken")
         self.function_frame = Frame(height=500,width=500,bd=1)
-
+        self.result_label = Label(self.function_frame,text='')
+        
         #layout main containers
         self.master.grid_rowconfigure(0, weight=1)
         self.master.grid_columnconfigure(0, weight=1)
@@ -24,7 +26,7 @@ class MathApp:
         for counter, formula in enumerate(self.formula_list):
             Button(self.button_frame,text=formula[0],command=formula[1]).grid(row=counter+2,column=0,sticky="w")
         
-        self.button_label = Label(self.button_frame, text="This is some text")
+        self.button_label = Label(self.button_frame, text="Available Formulas")
         self.button_label.grid(row=1, column=0, sticky="w")
         
 
@@ -56,8 +58,9 @@ class MathApp:
         c.grid(row=2,column=1,sticky='ew')
         
         # create and place evaluate button
-        calc_button = Button(self.function_frame,text="Calculate",command=lambda: qf(int(a.get()),int(b.get()),int(c.get())))
+        calc_button = Button(self.function_frame,text="Calculate",command=lambda: self.qf(int(a.get()),int(b.get()),int(c.get())))
         calc_button.grid(row=3,columnspan=2,sticky='ew')
+        
         
     def test(self):
         # get rid of everything in the function frame
@@ -66,13 +69,56 @@ class MathApp:
             
         print('test')
 
+    def qf(self, a, b, c):
+        ''' evaluate the quadratic formula and display results
+        '''
+        self.result_label.destroy()
+        result = quadratic_formula(a,b,c)
+        if result is None:
+            disp = 'No Solution'
+            
+        elif isinstance(result,float):
+            disp = f'{result:.2f}'
+            
+        else:
+            disp = f'{result[0]:.2f}' + ' and ' + f'{result[1]:.2f}'
+        
+        self.result_label = Label(self.function_frame,text=disp)
+        self.result_label.grid(row=4,columnspan=2)
+        
+    
+def quadratic_formula(a,b,c):
+    ''' returns the results from the quadratic formula
 
-
-
-def qf(a,b,c):
+        >>> quadratic_formula(1,3,2)
+        (-1.0, -2.0)
+        
+        >>> quadratic_formula(1,5,2)
+        (-0.438447, -4.561553)
+        
+        >>> quadratic_formula(-3,7,1)
+        (-0.135042, 2.468375)
+        
+        >>> quadratic_formula(1,1,1)
+        
+        
+        >>> quadratic_formula(1,0,-4)
+        (2.0, -2.0)
+        
+        >>> quadratic_formula(1,-4,4)
+        2.0
+        
+    '''
     from math import sqrt
-    print(a,b,c)
-    print((-b + sqrt(b**2 - 4*a*c))/(2*a))
+    if b**2 - 4*a*c < 0:
+        return None
+    
+    elif b**2 - 4*a*c == 0:
+        return round(-b/(2*a),6)
+    
+    else:
+        return (round((-b + sqrt(b**2 - 4*a*c))/(2*a),6), round((-b - sqrt(b**2 - 4*a*c))/(2*a),6))
+
 
 
 def my_func(a,b):
@@ -88,5 +134,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+    #import doctest
+    #doctest.testmod()
     
     
