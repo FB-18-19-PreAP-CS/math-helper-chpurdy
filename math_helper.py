@@ -27,13 +27,6 @@ class MathApp:
         self.button_label = Label(self.button_frame, text="This is some text")
         self.button_label.grid(row=1, column=0, sticky="w")
         
-        self.greet_button = Button(self.button_frame, text="Greet",command=self.greet)
-        self.greet_button.grid(row=1, column=1)
-        
-        self.close_button = Button(self.button_frame, text="Close",command=master.quit)
-        self.close_button.grid(row=1,column=2)
-        
-        self.function_label = Label(self.function_frame,text="test")
 
         
     def greet(self):
@@ -49,18 +42,37 @@ class MathApp:
         # create input labels and entries
         a_label = Label(self.function_frame,text='a:')
         a = Entry(self.function_frame)
+        b_label = Label(self.function_frame,text='b:')
+        b = Entry(self.function_frame)
+        c_label = Label(self.function_frame,text='c:')
+        c = Entry(self.function_frame)
         
         # place input labels and entries
-        a_label.grid(row=0,column=0,sticky='nsew')
-        a.grid(row=0,column=1,sticky='nsw')
+        a_label.grid(row=0,column=0,sticky='ew')
+        a.grid(row=0,column=1,sticky='ew')
+        b_label.grid(row=1,column=0,sticky='ew')
+        b.grid(row=1,column=1,sticky='ew')
+        c_label.grid(row=2,column=0,sticky='ew')
+        c.grid(row=2,column=1,sticky='ew')
+        
+        # create and place evaluate button
+        calc_button = Button(self.function_frame,text="Calculate",command=lambda: qf(int(a.get()),int(b.get()),int(c.get())))
+        calc_button.grid(row=3,columnspan=2,sticky='ew')
         
     def test(self):
+        # get rid of everything in the function frame
+        for widget in self.function_frame.winfo_children():
+            widget.destroy()
+            
         print('test')
 
 
 
 
-
+def qf(a,b,c):
+    from math import sqrt
+    print(a,b,c)
+    print((-b + sqrt(b**2 - 4*a*c))/(2*a))
 
 
 def my_func(a,b):
