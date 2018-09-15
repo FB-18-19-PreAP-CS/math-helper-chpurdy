@@ -1,18 +1,15 @@
 from tkinter import *
 
-
-
-
 class MathApp:
     def __init__(self, master):
         self.master = master
         master.title("Math Helper!")
-        self.formula_list = {('Quadratic Formula',self.quad),('Test Formula',self.test)}
+        self.formula_list = {('Quadratic Formula',self.setup_quad),('Test Formula',self.test)}
         
         
         # main containers
         self.button_frame = Frame(height=2, bd=1, relief="sunken")
-        self.function_frame = Frame(height=500,width=500,bd=1)
+        self.function_frame = Frame(height=0,width=0,bd=1)
         self.result_label = Label(self.function_frame,text='')
         
         #layout main containers
@@ -29,12 +26,8 @@ class MathApp:
         self.button_label = Label(self.button_frame, text="Available Formulas")
         self.button_label.grid(row=1, column=0, sticky="w")
         
-
         
-    def greet(self):
-        print("Cool")
-        
-    def quad(self):
+    def setup_quad(self):
         ''' setup entries for quadratic formula
         '''
         # get rid of everything in the function frame
@@ -58,7 +51,7 @@ class MathApp:
         c.grid(row=2,column=1,sticky='ew')
         
         # create and place evaluate button
-        calc_button = Button(self.function_frame,text="Calculate",command=lambda: self.qf(int(a.get()),int(b.get()),int(c.get())))
+        calc_button = Button(self.function_frame,text="Calculate",command=lambda: self.qf(a.get(),b.get(),c.get()))
         calc_button.grid(row=3,columnspan=2,sticky='ew')
         
         
@@ -73,6 +66,17 @@ class MathApp:
         ''' evaluate the quadratic formula and display results
         '''
         self.result_label.destroy()
+        
+        # Check for any missing inputs/convert inputs to integers
+        try:
+            a = int(a)
+            b = int(b)
+            c = int(c)
+        except ValueError:
+            self.result_label = Label(self.function_frame,text="Missing Input")
+            self.result_label.grid(row=4,columnspan=2)
+            return
+        
         result = quadratic_formula(a,b,c)
         if result is None:
             disp = 'No Solution'
@@ -89,7 +93,8 @@ class MathApp:
     
 def quadratic_formula(a,b,c):
     ''' returns the results from the quadratic formula
-
+        
+        Two solutions returns a tuple of floats
         >>> quadratic_formula(1,3,2)
         (-1.0, -2.0)
         
@@ -99,12 +104,14 @@ def quadratic_formula(a,b,c):
         >>> quadratic_formula(-3,7,1)
         (-0.135042, 2.468375)
         
+        No solution returns None
         >>> quadratic_formula(1,1,1)
         
         
         >>> quadratic_formula(1,0,-4)
         (2.0, -2.0)
         
+        One solution returns a float
         >>> quadratic_formula(1,-4,4)
         2.0
         
@@ -119,12 +126,6 @@ def quadratic_formula(a,b,c):
     else:
         return (round((-b + sqrt(b**2 - 4*a*c))/(2*a),6), round((-b - sqrt(b**2 - 4*a*c))/(2*a),6))
 
-
-
-def my_func(a,b):
-    ''' returns a particular formula that I made up
-    '''
-    return a + b - a * b -c
 
 def main():
     root = Tk()
