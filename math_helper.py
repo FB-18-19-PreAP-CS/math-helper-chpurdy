@@ -17,6 +17,7 @@ class MathApp:
         self.master.grid_rowconfigure(0, weight=1)
         self.master.grid_columnconfigure(0, weight=1)
         self.function_frame.grid_columnconfigure(0, weight=1)
+        
         #place main containers
         self.button_frame.grid(row=0, column=0, sticky="ns")
         self.function_frame.grid(row=0, column=1, sticky="nsew")
