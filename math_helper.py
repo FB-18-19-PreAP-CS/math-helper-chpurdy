@@ -3,7 +3,7 @@ from tkinter import *
 class MathApp:
     def __init__(self, master):
         self.master = master
-        master.title("Math Helper!")
+        self.master.title("Math Helper!")
         self.formula_list = {('Quadratic Formula',self.setup_quad),
                              ('Pythagorean Theorem',self.setup_pythag)}
         
@@ -14,19 +14,20 @@ class MathApp:
         self.result_label = Label(self.function_frame,text='')
         
         #layout main containers
+        self.master.grid_columnconfigure(0, weight=0)
+        self.master.grid_columnconfigure(1, weight=1)
         self.master.grid_rowconfigure(0, weight=1)
-        self.master.grid_columnconfigure(0, weight=1)
         self.function_frame.grid_columnconfigure(0, weight=1)
         
         #place main containers
-        self.button_frame.grid(row=0, column=0, sticky="ns")
+        self.button_frame.grid(row=0, column=0, sticky="NSEW")
         self.function_frame.grid(row=0, column=1, sticky="nsew")
         
         for counter, formula in enumerate(self.formula_list):
             Button(self.button_frame,text=formula[0],command=formula[1]).grid(row=counter+2,column=0,sticky="w")
         
         self.button_label = Label(self.button_frame, text="Available Formulas")
-        self.button_label.grid(row=1, column=0, sticky="w")
+        self.button_label.grid(row=1, column=0, sticky="nsew")
         
         
     def setup_quad(self):
