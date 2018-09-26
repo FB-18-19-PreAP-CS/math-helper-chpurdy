@@ -163,10 +163,11 @@ def main():
         print("Available Formulas:")
         print("(1) Quadratic Formula")
         print("(2) Pythagorean Theorem")
+        print("(3) Quit Program")
         print("Type the number of your choice and press enter.")
         try:
             choice = int(input("> "))
-            if choice < 1 and choice > 2:
+            if choice < 1 and choice > 3:
                 print("Invalid option!")
                 print()
                 continue
@@ -178,6 +179,10 @@ def main():
             run_qf()
         elif choice == 2:
             run_pythag()
+        elif choice == 3:
+            quit = True
+            print("I hoped I helper")
+            break
         else:
             print("Something went wrong!")
         
