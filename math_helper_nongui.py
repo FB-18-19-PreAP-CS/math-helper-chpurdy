@@ -167,7 +167,7 @@ def main():
         print("Type the number of your choice and press enter.")
         try:
             choice = int(input("> "))
-            if choice < 1 and choice > 2:
+            if choice < 1 and choice > 3:
                 print("Invalid option!")
                 print()
                 continue
