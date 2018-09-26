@@ -1,9 +1,10 @@
 from tkinter import *
+from tkinter.messagebox import showinfo
 
 class MathApp:
     def __init__(self, master):
         self.master = master
-        master.title("Math Helper!")
+        self.master.title("Math Helper!")
         self.formula_list = {('Quadratic Formula',self.setup_quad),
                              ('Pythagorean Theorem',self.setup_pythag)}
         
@@ -14,20 +15,22 @@ class MathApp:
         self.result_label = Label(self.function_frame,text='')
         
         #layout main containers
+        self.master.grid_columnconfigure(0, weight=0)
+        self.master.grid_columnconfigure(1, weight=1)
         self.master.grid_rowconfigure(0, weight=1)
-        self.master.grid_columnconfigure(0, weight=1)
         self.function_frame.grid_columnconfigure(0, weight=1)
         
         #place main containers
-        self.button_frame.grid(row=0, column=0, sticky="ns")
+        self.button_frame.grid(row=0, column=0, sticky="NSEW")
         self.function_frame.grid(row=0, column=1, sticky="nsew")
         
         for counter, formula in enumerate(self.formula_list):
             Button(self.button_frame,text=formula[0],command=formula[1]).grid(row=counter+2,column=0,sticky="w")
         
         self.button_label = Label(self.button_frame, text="Available Formulas")
-        self.button_label.grid(row=1, column=0, sticky="w")
-        
+        self.button_label.grid(row=1, column=0, sticky="nsew")
+        self.formula_label = Label(self.function_frame,text='')
+        self.formula_label.grid(row=0,column=1,sticky="nsew")
         
     def setup_quad(self):
         ''' setup entries for quadratic formula
@@ -35,7 +38,8 @@ class MathApp:
         # get rid of everything in the function frame
         for widget in self.function_frame.winfo_children():
             widget.destroy()
-        
+        self.formula_label = Label(self.function_frame,text='ax^2 + bx + c = 0')
+        self.formula_label.grid(row=0,column=0,columnspan=2,sticky="nsew")
         # create input labels and entries
         a_label = Label(self.function_frame,text='a:')
         a = Entry(self.function_frame)
@@ -45,22 +49,22 @@ class MathApp:
         c = Entry(self.function_frame)
         
         # place input labels and entries
-        a_label.grid(row=0,column=0,sticky='ew')
-        a.grid(row=0,column=1,sticky='ew')
-        b_label.grid(row=1,column=0,sticky='ew')
-        b.grid(row=1,column=1,sticky='ew')
-        c_label.grid(row=2,column=0,sticky='ew')
-        c.grid(row=2,column=1,sticky='ew')
+        a_label.grid(row=1,column=0,sticky='ew')
+        a.grid(row=1,column=1,sticky='ew')
+        b_label.grid(row=2,column=0,sticky='ew')
+        b.grid(row=2,column=1,sticky='ew')
+        c_label.grid(row=3,column=0,sticky='ew')
+        c.grid(row=3,column=1,sticky='ew')
         
         # create and place evaluate button
         calc_button = Button(self.function_frame,text="Calculate",command=lambda: self.qf(a.get(),b.get(),c.get()))
-        calc_button.grid(row=3,columnspan=2,sticky='ew')
+        calc_button.grid(row=4,columnspan=2,sticky='ew')
         
 
     def qf(self, a, b, c):
         ''' evaluate the quadratic formula and display results
         '''
-        
+        self.formula_label.destroy()
         self.result_label.destroy()
         
         # Check for any missing inputs/convert inputs to integers
@@ -93,7 +97,8 @@ class MathApp:
         # get rid of everything in the function frame
         for widget in self.function_frame.winfo_children():
             widget.destroy()
-        
+        self.formula_label = Label(self.function_frame,text='a^2 + b^2 = c^2')
+        self.formula_label.grid(row=0,column=0,columnspan=2,sticky="nsew")
         # create input labels and entries
         a_label = Label(self.function_frame,text='a:')
         a = Entry(self.function_frame)
@@ -103,16 +108,16 @@ class MathApp:
         c = Entry(self.function_frame)
         
         # place input labels and entries
-        a_label.grid(row=0,column=0,sticky='ew')
-        a.grid(row=0,column=1,sticky='ew')
-        b_label.grid(row=1,column=0,sticky='ew')
-        b.grid(row=1,column=1,sticky='ew')
-        c_label.grid(row=2,column=0,sticky='ew')
-        c.grid(row=2,column=1,sticky='ew')
+        a_label.grid(row=1,column=0,sticky='ew')
+        a.grid(row=1,column=1,sticky='ew')
+        b_label.grid(row=2,column=0,sticky='ew')
+        b.grid(row=2,column=1,sticky='ew')
+        c_label.grid(row=3,column=0,sticky='ew')
+        c.grid(row=3,column=1,sticky='ew')
         
         # create and place evaluate button
         calc_button = Button(self.function_frame,text="Calculate",command=lambda: self.pt(a.get(),b.get(),c.get()))
-        calc_button.grid(row=3,columnspan=2,sticky='ew')
+        calc_button.grid(row=4,columnspan=2,sticky='ew')
     
     def pt(self, a, b, c):
         ''' find the missing side and display the result
@@ -150,6 +155,7 @@ class MathApp:
         except ValueError as e:
             self.result_label = Label(self.function_frame,text=e)
             self.result_label.grid(row=4,columnspan=2)
+            showinfo("Error",e)
         
 
     
