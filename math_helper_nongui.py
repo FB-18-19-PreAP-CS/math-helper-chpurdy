@@ -180,8 +180,8 @@ def main():
         elif choice == 2:
             run_pythag()
         elif choice == 3:
-            print("Goodbye")
-            break
+            print("I hope I helped")
+            return
         else:
             print("Something went wrong!")
         
